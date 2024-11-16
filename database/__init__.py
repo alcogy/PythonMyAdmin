@@ -1,20 +1,23 @@
 import mysql.connector
 
-# MySQL Core.
-class Database:
+db = mysql.connector.connect(
+  user='user',
+  password='pass',
+  host='localhost',
+  database='mossapi',
+)
 
-  def __init__(self):
-    self.conn = mysql.connector.connect(
-      user='user',
-      password='pass',
-      host='localhost',
-      database='mossapi',
-    )
-
-  def select(self) -> list:
-    result = []
-    cur = self.conn.cursor()
-    cur.execute("select * from bland")
+def post_query(sql):
+  result = []
+  cur = db.cursor()
+  try:
+    cur.execute(sql)
+    result.append([i[0] for i in cur.description])
     for data in cur.fetchall():
       result.append(data)
-    return result
+    cur.close()
+  except ValueError as err:
+    print(err)
+  finally :
+    cur.close()
+  return result
