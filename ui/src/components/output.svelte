@@ -1,39 +1,27 @@
+<script>
+  import { data } from '../shared.svelte'
+</script>
+
+{#if data.data !== undefined && data.data !== null}
 <table>
   <thead>
     <tr>
-      <th>id</th>
-      <th>name</th>
-      <th>age</th>
-      <th>city</th>
-      <th>language</th>
-      <th>hobby</th>
-      <th>created_at</th>
-      <th>update_at</th>
+      {#each data.data[0] as h}
+      <th>{h}</th>
+      {/each}
     </tr>
   </thead>
   <tbody>
+    {#each data.data.slice(1) as columns}
     <tr>
-      <td>123909</td>
-      <td>Jho Syme</td>
-      <td>43</td>
-      <td>Dublin</td>
-      <td> Swift, OCaml, Go, TypeScript</td>
-      <td>Guiness!!</td>
-      <td>2024-11-12T11:34:20.003</td>
-      <td>2024-11-12T11:34:20.003</td>
+      {#each columns as col}
+      <td>{col}</td>
+      {/each}
     </tr>
-    <tr>
-      <td>320232</td>
-      <td>Steave Rosso</td>
-      <td>55</td>
-      <td>London</td>
-      <td>C/C++, Rust, Kotlin, Haskell</td>
-      <td>Guiness!!</td>
-      <td>2024-11-12T11:34:20.003</td>
-      <td>2024-11-12T11:34:20.003</td>
-    </tr>
+    {/each}
   </tbody>
 </table>
+{/if}
 
 <style lang="scss">
   table {
@@ -53,13 +41,13 @@
       padding: 5px;
       border: 1px solid #666;
       font-weight: 500;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
     }
     & td {
       border: 1px solid #888;
       padding: 3px 5px;
       color: #fff;
-      font-size: 1.0rem;
+      font-size: 0.95rem;
       white-space: nowrap;
     }
   }
