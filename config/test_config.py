@@ -43,7 +43,17 @@ class TestConfig(unittest.TestCase):
     import random
     new_value = ''.join(random.choices(string.ascii_letters, k=8))
     c = Config()
-    result = c.update('mossapi', 'user', new_value)
+    result = c.update('mossapi', {'user': new_value, 'password': 'aaa', 'host': 'local'})
+    self.assertEqual(result, True)
+    c2 = Config()
+    self.assertEqual(c2.value('mossapi', 'user'), new_value)
+
+  def test_update_one(self):
+    import string
+    import random
+    new_value = ''.join(random.choices(string.ascii_letters, k=8))
+    c = Config()
+    result = c.update_one('mossapi', 'user', new_value)
     self.assertEqual(result, True)
     c2 = Config()
     self.assertEqual(c2.value('mossapi', 'user'), new_value)

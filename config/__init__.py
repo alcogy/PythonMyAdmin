@@ -5,6 +5,9 @@ class Config:
     self.config = configparser.ConfigParser()
     self.config.read('db.ini')
 
+  def write(self):
+    with open('db.ini', 'w') as file:
+      self.config.write(file)
 
   def sections(self) -> list:
     """ Return section(database name) list. """
@@ -13,6 +16,13 @@ class Config:
   def has_database(self, db) -> bool:
     """ Return exsist database or none """
     return db in self.config.sections()
+
+  def get_config_by_db(self, db) -> object:
+    if not self.has_database(db):
+      print('not exists database')
+      return None
+    
+    return self.config[db]
 
   def value(self, db, key) -> str:
     """ Return specific value """
@@ -24,15 +34,33 @@ class Config:
     
     return self.config[db][key]
 
+  def update(self, db, obj) -> bool:
+    if not self.has_database(db):
+      print('not exists database')
+      return False
+    
+    if not 'user' in obj or not 'password' in obj or not 'host' in obj: 
+      print('need keys user, password, host.')
+      print(obj)
+      return False
+    
+    for key in obj.keys():
+      if key != 'user' and key != 'password' and key != 'host':
+        print('attributes only user, password, host. you set ' + key)
+        return False
+      
+    self.config[db] = obj
+    self.write()
 
-  def update(self, db, key, value) -> bool:
+    return True
+
+  def update_one(self, db, key, value) -> bool:
     """ Update specific value and ini file. If key is none return false"""
     if self.value(db, key) == '':
       return False
     
     self.config[db][key] = value
-    with open('db.ini', 'w') as file:
-      self.config.write(file)
+    self.write()
     
     return True
   
@@ -54,8 +82,7 @@ class Config:
         return False
       
     self.config[db] = obj
-    with open('db.ini', 'w') as file:
-      self.config.write(file)
+    self.write()
     
     return True
   
@@ -67,8 +94,7 @@ class Config:
       return False
     
     self.config.remove_section(db)
-    with open('db.ini', 'w') as file:
-      self.config.write(file)
+    self.write()
     
     return True
   
@@ -77,5 +103,4 @@ class Config:
     self.config.clear()
     for db in data:
       self.config[db['db']] = db['config']
-    with open('db.ini', 'w') as file:
-      self.config.write(file)
+    self.write()

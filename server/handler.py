@@ -26,12 +26,27 @@ def fetch_table_list(database):
   result = db.fetch_tables(database)
   return result[1:]
 
+def get_configure(database):
+  c = Config()
+  return c.get_config_by_db(database)
 
 def post_configure():
-  """ Update and rewrite all configs. """
   body = request.json
-  if not 'dbs' in body:
-    print('Post parameter must have "dbs"')
+  if not 'conf' in body:
+    print('Post parameter must have "conf"')
     print(body)
   c = Config()
-  c.overwrite(body)
+  c.insert(body['conf'])
+
+def put_configure():
+  """ Update and rewrite configure. """
+  body = request.json
+  if not 'conf' in body:
+    print('Post parameter must have "conf"')
+    print(body)
+  c = Config()
+  c.update(body['conf'])
+
+def delete_cnfigure(database):
+  c = Config()
+  c.delete(database)
