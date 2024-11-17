@@ -9,13 +9,14 @@
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({'sql': data.query})
+      body: JSON.stringify({'db': 'mossapi', 'sql': data.query})
     });
     const result = await response.json();
     data.data = result;
     } catch (e) {
       console.error(e);
       data.data = [];
+      alert('error')
     } 
     
   }
@@ -23,9 +24,6 @@
 
 <nav>
   <button on:click={enter}>Execute</button>
-  <span>two</span>
-  <span>three</span>
-  <span>four</span>
 </nav>
   
 <style lang="scss">
@@ -36,9 +34,5 @@
     gap: 10px;
     align-items: center;
     padding: 0 4px;
-    & span {
-      color: #333;
-      padding: 0 5px;
-    }
   }
 </style>

@@ -1,22 +1,19 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template
 from flask_cors import CORS
-import database as db
+import server.handler as h
 
 app = Flask(__name__, static_folder='static', static_url_path="/static")
 CORS(app)
-
-@app.post('/api/sql')
-def post_sql():
-  body = request.json
-  print(body)
-  data = db.post_query(body['sql'])
-  return jsonify(data)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
   title= 'PythonMyAdmin'
   return render_template("index.html", **locals())
+
+app.add_url_rule('/api/sql', 'sql', h.post_sql, None, methods=['POST'])
+app.add_url_rule('/api/dblist', 'dblist', h.fetch_db_list, None, methods=['GET'])
+app.add_url_rule('/api/tables/<database>', 'tablelist/<database>', h.fetch_table_list, None, methods=['GET'])
 
 def create_app():
   return app

@@ -41,13 +41,12 @@
       padding: 5px;
       border: 1px solid #666;
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 1.1rem;
     }
     & td {
       border: 1px solid #888;
       padding: 3px 5px;
       color: #fff;
-      font-size: 0.95rem;
       white-space: nowrap;
     }
   }

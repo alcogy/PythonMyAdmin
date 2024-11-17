@@ -1,13 +1,14 @@
 import mysql.connector
+from config import Config
 
-db = mysql.connector.connect(
-  user='user',
-  password='pass',
-  host='localhost',
-  database='mossapi',
-)
-
-def post_query(sql):
+def post_query(database, sql):
+  conf = Config()
+  db = mysql.connector.connect(
+    user=conf.value(database, 'user'),
+    password=conf.value(database, 'password'),
+    host=conf.value(database, 'host'),
+    database=database,
+  )
   result = []
   cur = db.cursor()
   try:
@@ -21,3 +22,7 @@ def post_query(sql):
   finally :
     cur.close()
   return result
+
+def fetch_tables(db):
+  sql = "show tables"
+  return post_query(db, sql)
