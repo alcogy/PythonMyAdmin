@@ -23,6 +23,8 @@ def post_query(database, sql):
     cur.close()
   return result
 
+
 def fetch_tables(db):
   sql = "show tables"
   return post_query(db, sql)
+

@@ -20,7 +20,6 @@ def fetch_db_list():
   
 
 def fetch_table_list(database):
-  print(database)
   """ fetch show tables """
   if database == '':
     return abort(500, 'Must select database.')
