@@ -71,4 +71,11 @@ class Config:
       self.config.write(file)
     
     return True
+  
 
+  def overwrite(self, data):
+    self.config.clear()
+    for db in data:
+      self.config[db['db']] = db['config']
+    with open('db.ini', 'w') as file:
+      self.config.write(file)

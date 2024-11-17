@@ -25,3 +25,13 @@ def fetch_table_list(database):
     return abort(500, 'Must select database.')
   result = db.fetch_tables(database)
   return result[1:]
+
+
+def post_configure():
+  """ Update and rewrite all configs. """
+  body = request.json
+  if not 'dbs' in body:
+    print('Post parameter must have "dbs"')
+    print(body)
+  c = Config()
+  c.overwrite(body)
